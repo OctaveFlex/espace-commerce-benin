@@ -1476,7 +1476,7 @@
       <button type="button" onclick="clearImageSearch()">✕ Revenir à la recherche normale</button>
     </div>
     <div class="toolbar">
-      <div class="search"><input id="searchInput" type="text" placeholder="Chercher un produit, un tissu, un marchand..."></div>
+      <div class="search"><input id="searchInput" type="search" name="q" autocomplete="off" placeholder="Chercher un produit, un tissu, un marchand..."></div>
       <div class="filters" id="filterChips"></div>
       <button class="btn btn-outline" id="advFilterToggle" type="button">⚙️ Filtres avancés</button>
     </div>
@@ -1800,10 +1800,10 @@
     <p class="hint" id="accountOverlayHint">La création de compte est gratuite et immédiate. La vérification d'identité (KYC), elle, est une étape séparée et payante — voir plus bas.</p>
     <div class="row-2">
       <div class="field"><label>Nom d'utilisateur</label><input id="accUsername" type="text" placeholder="Ex : espoir_d"></div>
-      <div class="field"><label>Email</label><input id="accEmail" type="email" placeholder="vous@exemple.com"></div>
+      <div class="field"><label>Email</label><input id="accEmail" type="email" autocomplete="email" placeholder="vous@exemple.com"></div>
     </div>
-    <div class="field"><label>Mot de passe</label><input id="accPassword" type="password" placeholder="8 caractères minimum"></div>
-    <div class="field"><label>Confirmer le mot de passe</label><input id="accPassword2" type="password" placeholder="Retapez le mot de passe"></div>
+    <div class="field"><label>Mot de passe</label><input id="accPassword" type="password" autocomplete="new-password" placeholder="8 caractères minimum"></div>
+    <div class="field"><label>Confirmer le mot de passe</label><input id="accPassword2" type="password" autocomplete="new-password" placeholder="Retapez le mot de passe"></div>
     <div class="field"><label>Nom complet</label><input id="accName" type="text" placeholder="Ex : Espérance A. Dossou"></div>
     <div class="field"><label>Téléphone (Mobile Money)</label><input id="accPhone" type="tel" inputmode="tel" placeholder="Ex : 97 00 00 00"></div>
     <div class="field"><label>Code de parrainage <span style="font-weight:400; color:#5B5A52;">(facultatif)</span></label><input id="accReferral" type="text" placeholder="Ex : ESPE482" style="text-transform:uppercase;"></div>
@@ -2253,8 +2253,8 @@
       <button class="modal-close" onclick="closeModal('loginOverlay')">✕</button>
     </div>
     <p class="hint" id="loginHint">Connectez-vous avec l'email et le mot de passe de votre compte.</p>
-    <div class="field"><label>Email</label><input id="loginEmail" type="email" placeholder="vous@exemple.com"></div>
-    <div class="field"><label>Mot de passe</label><input id="loginPassword" type="password" placeholder="••••••••"></div>
+    <div class="field"><label>Email</label><input id="loginEmail" type="email" autocomplete="username" placeholder="vous@exemple.com"></div>
+    <div class="field"><label>Mot de passe</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="••••••••"></div>
     <button class="trust-link" style="margin-bottom:14px;" onclick="openForgotPassword()">Mot de passe oublié ?</button>
     <p id="loginError" style="display:none; color:#D6472B; font-size:0.82rem; margin-bottom:10px;">Email ou mot de passe incorrect.</p>
     <button class="btn btn-primary btn-block" onclick="submitLogin()">Se connecter</button>
@@ -2269,14 +2269,14 @@
     </div>
     <div id="resetStep1">
       <p class="hint">Indiquez l'email de votre compte<span id="resetRoleLabel"></span>. Un code sera envoyé par SMS au numéro associé pour confirmer votre identité.</p>
-      <div class="field"><label>Email</label><input id="resetEmail" type="email" placeholder="vous@exemple.com"></div>
+      <div class="field"><label>Email</label><input id="resetEmail" type="email" autocomplete="username" placeholder="vous@exemple.com"></div>
       <p id="resetError" style="display:none; color:#D6472B; font-size:0.82rem; margin-bottom:10px;">Aucun compte trouvé avec cet email.</p>
       <button class="btn btn-primary btn-block" onclick="startPasswordReset()">Envoyer le code de vérification</button>
     </div>
     <div id="resetStep2" style="display:none;">
       <p class="hint">Identité vérifiée. Choisissez un nouveau mot de passe.</p>
-      <div class="field"><label>Nouveau mot de passe</label><input id="resetPassword1" type="password" placeholder="8 caractères min., avec lettres et chiffres"></div>
-      <div class="field"><label>Confirmer le mot de passe</label><input id="resetPassword2" type="password" placeholder="••••••••"></div>
+      <div class="field"><label>Nouveau mot de passe</label><input id="resetPassword1" type="password" autocomplete="new-password" placeholder="8 caractères min., avec lettres et chiffres"></div>
+      <div class="field"><label>Confirmer le mot de passe</label><input id="resetPassword2" type="password" autocomplete="new-password" placeholder="••••••••"></div>
       <p id="resetError2" style="display:none; color:#D6472B; font-size:0.82rem; margin-bottom:10px;">Vérifiez que les deux mots de passe correspondent et respectent la règle (8 caractères min., au moins une lettre et un chiffre).</p>
       <button class="btn btn-primary btn-block" onclick="confirmPasswordReset()">Réinitialiser le mot de passe</button>
     </div>
