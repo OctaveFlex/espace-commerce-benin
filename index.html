@@ -1652,6 +1652,111 @@
   </div>
 </div>
 
+<div class="overlay" id="adminCreateOverlay">
+  <div class="modal wide">
+    <div class="modal-head">
+      <h3 id="admCreateTitle">Créer un compte</h3>
+      <button class="modal-close" onclick="closeModal('adminCreateOverlay')">✕</button>
+    </div>
+    <p class="hint" id="admCreateHint">Création directe par l'administration — la personne n'a pas besoin de s'inscrire elle-même.</p>
+    <p id="admCreateError" style="display:none; color:#D6472B; font-size:0.85rem; margin-bottom:10px;"></p>
+
+    <div class="field"><label>Email</label><input id="admCreateEmail" type="email" autocomplete="off" oninput="checkAdminCreateExistingBase()" placeholder="vous@exemple.com"></div>
+    <p class="hint" id="admCreateExistingNote" style="display:none;">Un compte existe déjà avec cet email pour un autre rôle : le nom d'utilisateur et le mot de passe de ce compte existant seront conservés (champs grisés ci-dessous).</p>
+    <div class="row-2">
+      <div class="field"><label>Nom d'utilisateur</label><input id="admCreateUsername" type="text" autocomplete="off" placeholder="Ex : aicha_wax"></div>
+      <div class="field"><label id="admCreateNameLabel">Nom complet</label><input id="admCreateName" type="text" autocomplete="off" placeholder="Ex : Aïcha B. Zannou"></div>
+    </div>
+    <div class="row-2">
+      <div class="field"><label>Téléphone</label><input id="admCreatePhone" type="tel" inputmode="tel" autocomplete="off" placeholder="Ex : 96 00 00 00"></div>
+      <div class="field"><label>Mot de passe temporaire</label>
+        <div style="display:flex; gap:8px;">
+          <input id="admCreatePassword" type="text" autocomplete="off" placeholder="8 car. min., lettres + chiffres" style="flex:1;">
+          <button type="button" class="btn btn-outline" onclick="generateAdminCreatePassword()">Générer</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="admCreateMerchantFields" style="display:none;">
+      <div class="field"><label>Nom de la boutique</label><input id="admCreateShop" type="text" autocomplete="off" placeholder="Ex : Boutique Aïcha Wax"></div>
+      <div class="field">
+        <label>Type de vente</label>
+        <div class="seller-type-toggle">
+          <button type="button" class="seller-type-btn active" id="admCreateTypeEtalBtn" onclick="setAdminCreateSellerType('etal')">🏪 Étal dans un marché</button>
+          <button type="button" class="seller-type-btn" id="admCreateTypeBoutiqueBtn" onclick="setAdminCreateSellerType('boutique')">🏬 Boutique</button>
+        </div>
+      </div>
+      <div id="admCreateEtalFields">
+        <div class="row-2">
+          <div class="field"><label>Marché</label><select id="admCreateMarche" style="width:100%; padding:11px 14px; border-radius:10px; border:1px solid #E4E8E0; font-family:var(--sans); font-size:0.92rem;" onchange="refreshAdminCreateZoneOptions()"></select></div>
+          <div class="field"><label>Quartier</label><select id="admCreateZone" style="width:100%; padding:11px 14px; border-radius:10px; border:1px solid #E4E8E0; font-family:var(--sans); font-size:0.92rem;"></select></div>
+        </div>
+        <div class="field"><label>Type de vente</label>
+          <select id="admCreateSaleType" style="width:100%; padding:11px 14px; border-radius:10px; border:1px solid #E4E8E0; font-family:var(--sans); font-size:0.92rem;">
+            <option value="gros">Vente en gros</option>
+            <option value="detail">Vente en détail</option>
+            <option value="les_deux">Les deux</option>
+          </select>
+        </div>
+      </div>
+      <div id="admCreateBoutiqueFields" style="display:none;">
+        <div class="field"><label>Nature de la boutique</label><input id="admCreateBoutiqueNature" type="text" autocomplete="off" placeholder="Ex : Prêt-à-porter, électroménager, épicerie fine..."></div>
+      </div>
+    </div>
+
+    <div id="admCreateLivreurFields" style="display:none;">
+      <div class="row-2">
+        <div class="field"><label>Type de compte</label>
+          <select id="admCreateAccountType" style="width:100%; padding:11px 14px; border-radius:10px; border:1px solid #E4E8E0; font-family:var(--sans); font-size:0.92rem;" onchange="toggleAdminCreateOrgField()">
+            <option value="particulier">Particulier</option>
+            <option value="organisation">Organisation / Entreprise</option>
+          </select>
+        </div>
+        <div class="field"><label>Moyen de livraison</label>
+          <select id="admCreateVehicle" style="width:100%; padding:11px 14px; border-radius:10px; border:1px solid #E4E8E0; font-family:var(--sans); font-size:0.92rem;">
+            <option value="Vélo">Vélo</option>
+            <option value="Moto">Moto</option>
+            <option value="Véhicule">Véhicule</option>
+          </select>
+        </div>
+      </div>
+      <div class="field" id="admCreateOrgNameField" style="display:none;"><label>Nom de l'organisation / entreprise</label><input id="admCreateOrgName" type="text" autocomplete="off" placeholder="Ex : Rapido Livraison Sarl"></div>
+    </div>
+
+    <button class="btn btn-primary btn-block" onclick="submitAdminCreateAccount()">Créer le compte</button>
+  </div>
+</div>
+
+<div class="overlay" id="adminAddProductOverlay">
+  <div class="modal wide">
+    <div class="modal-head">
+      <h3>Ajouter un produit (administration)</h3>
+      <button class="modal-close" onclick="closeModal('adminAddProductOverlay')">✕</button>
+    </div>
+    <p class="hint">Publie un produit directement pour le compte d'une boutique déjà inscrite — utile pour aider un marchand qui ne peut pas le faire lui-même.</p>
+    <p id="admProdError" style="display:none; color:#D6472B; font-size:0.85rem; margin-bottom:10px;"></p>
+    <div class="field"><label>Boutique</label>
+      <select id="admProdVendor" style="width:100%; padding:11px 14px; border-radius:10px; border:1px solid #E4E8E0; font-family:var(--sans); font-size:0.92rem;"></select>
+    </div>
+    <div class="row-2">
+      <div class="field"><label>Nom du produit</label><input id="admProdName" type="text" autocomplete="off" placeholder="Ex : Pagne wax 6 yards"></div>
+      <div class="field"><label>Prix (FCFA)</label><input id="admProdPrice" type="text" autocomplete="off" placeholder="Ex : 28 000"></div>
+    </div>
+    <div class="field"><label>Quartier / catégorie</label>
+      <select id="admProdCat" style="width:100%; padding:11px 14px; border-radius:10px; border:1px solid #E4E8E0; font-family:var(--sans); font-size:0.92rem;"></select>
+    </div>
+    <div class="field">
+      <label>Photos du produit <span style="font-weight:400; color:#5B5A52;">(facultatif — une photo par variante : couleur, motif, qualité...)</span></label>
+      <label class="file-field" for="admProdPhotos">📷 <span id="admProdPhotosName">Choisir une ou plusieurs photos</span><input id="admProdPhotos" type="file" accept="image/*" multiple onchange="onAdminProductPhotosPicked()"></label>
+    </div>
+    <div class="field" id="admProdPhotoLabelsField" style="display:none;">
+      <label>Légende de chaque photo <span style="font-weight:400; color:#5B5A52;">(dans l'ordre des photos choisies)</span></label>
+      <div id="admProdPhotoLabelsList"></div>
+    </div>
+    <button class="btn btn-primary btn-block" onclick="submitAdminAddProduct()">Publier ce produit</button>
+  </div>
+</div>
+
 <div class="overlay" id="myProfileOverlay">
   <div class="modal">
     <div class="modal-head">
@@ -1669,6 +1774,17 @@
     <div class="field"><label>Téléphone (Mobile Money)</label><input id="mpvPhone" type="tel" inputmode="tel"></div>
     <p class="hint" id="mpvRoleHint" style="margin-bottom:0;"></p>
     <button class="btn btn-primary btn-block" onclick="saveMyProfile()">Enregistrer</button>
+
+    <div style="margin:20px 0 4px; border-top:1px solid #E4E8E0; padding-top:16px;">
+      <label style="font-weight:600; display:block; margin-bottom:4px;">🔒 Sécurité du compte</label>
+      <p class="hint">Vous pensez que quelqu'un d'autre connaît votre mot de passe, ou constatez une activité inhabituelle sur votre compte (commande que vous n'avez pas passée, informations modifiées) ? Changez votre mot de passe tout de suite, sans attendre.</p>
+      <div class="field"><label>Mot de passe actuel</label><input id="mpvCurrentPassword" type="password" autocomplete="current-password" placeholder="••••••••"></div>
+      <div class="field"><label>Nouveau mot de passe</label><input id="mpvNewPassword" type="password" autocomplete="new-password" placeholder="8 caractères min., lettres + chiffres"></div>
+      <div class="field"><label>Confirmer le nouveau mot de passe</label><input id="mpvNewPassword2" type="password" autocomplete="new-password" placeholder="••••••••"></div>
+      <p id="mpvPasswordError" style="display:none; color:#D6472B; font-size:0.82rem; margin-bottom:8px;"></p>
+      <p id="mpvPasswordSuccess" style="display:none; color:#1E7A44; font-size:0.82rem; margin-bottom:8px;">Mot de passe mis à jour avec succès.</p>
+      <button class="btn btn-outline btn-block" onclick="changeMyPassword()">Mettre à jour le mot de passe</button>
+    </div>
   </div>
 </div>
 
@@ -2413,6 +2529,7 @@
     <div class="role-pane" id="merSettings">
       <p class="section-desc">Modifiez les informations de votre boutique (emplacement, horaires, mode de vente au détail / en gros).</p>
       <button class="btn btn-outline" onclick="openModal('profileOverlay')">✏️ Modifier le profil de la boutique</button>
+      <button class="btn btn-outline" style="margin-top:8px;" onclick="openMyProfile()">🔒 Sécurité du compte (changer mon mot de passe)</button>
     </div>
   </main>
 </div>
@@ -2507,14 +2624,17 @@
       <div id="admKycBody"></div>
     </div>
     <div class="admin-pane" id="admBuyers">
+      <div style="display:flex; justify-content:flex-end; margin-bottom:10px;"><button class="btn btn-primary" onclick="openAdminCreateAccount('buyer')">➕ Nouvel acheteur</button></div>
       <div id="admBuyersToolbar"></div>
       <div class="table-card"><div class="table-card-scroll"><table class="ledger-table"><thead><tr><th>ID</th><th>Utilisateur</th><th>Email</th><th>Nom</th><th>Téléphone</th><th>Statut</th><th></th></tr></thead><tbody id="admBuyersBody"></tbody></table></div><div id="admBuyersPagination"></div></div>
     </div>
     <div class="admin-pane" id="admMerchants">
+      <div style="display:flex; justify-content:flex-end; margin-bottom:10px;"><button class="btn btn-primary" onclick="openAdminCreateAccount('merchant')">➕ Nouveau marchand</button></div>
       <div id="admMerchantsToolbar"></div>
       <div class="table-card"><div class="table-card-scroll"><table class="ledger-table"><thead><tr><th>ID</th><th>Utilisateur</th><th>Email</th><th>Boutique</th><th>Quartier</th><th>Abonné</th><th>Statut</th><th></th></tr></thead><tbody id="admMerchantsBody"></tbody></table></div><div id="admMerchantsPagination"></div></div>
     </div>
     <div class="admin-pane" id="admLivreurs">
+      <div style="display:flex; justify-content:flex-end; margin-bottom:10px;"><button class="btn btn-primary" onclick="openAdminCreateAccount('livreur')">➕ Nouveau livreur</button></div>
       <div id="admLivreursToolbar"></div>
       <div class="table-card"><div class="table-card-scroll"><table class="ledger-table"><thead><tr><th>ID</th><th>Utilisateur</th><th>Email</th><th>Nom</th><th>Véhicule</th><th>Statut</th><th></th></tr></thead><tbody id="admLivreursBody"></tbody></table></div><div id="admLivreursPagination"></div></div>
     </div>
@@ -2523,6 +2643,7 @@
       <div class="table-card"><div class="table-card-scroll"><table class="ledger-table"><thead><tr><th>Commande</th><th>Statut</th><th>Total</th><th>Frais</th><th></th></tr></thead><tbody id="admOrdersBody"></tbody></table></div><div id="admOrdersPagination"></div></div>
     </div>
     <div class="admin-pane" id="admProducts">
+      <div style="display:flex; justify-content:flex-end; margin-bottom:10px;"><button class="btn btn-primary" onclick="openAdminAddProduct()">➕ Nouveau produit</button></div>
       <div id="admProductsToolbar"></div>
       <div class="table-card"><div class="table-card-scroll"><table class="ledger-table"><thead><tr><th>Produit</th><th>Boutique</th><th>Quartier</th><th>Prix</th><th></th></tr></thead><tbody id="admProductsBody"></tbody></table></div><div id="admProductsPagination"></div></div>
     </div>
@@ -3890,7 +4011,10 @@
     }
     const acc = accounts[resetContext.role][resetContext.email];
     if(!acc) return;
-    acc.password = p1;
+    // Une identité (un email) peut avoir plusieurs rôles (acheteur/marchand/livreur), qui
+    // partagent le même mot de passe dans le modèle de l'app : on le met à jour partout où
+    // cet email a un compte, pas seulement pour le rôle utilisé sur ce formulaire.
+    updatePasswordEverywhere(resetContext.email, p1);
     saveState();
     closeModal("resetOverlay");
     if(acc.profile && acc.profile.phone) sendSms(acc.profile.phone, `Espace Commerce+ — Le mot de passe de votre compte a été réinitialisé avec succès.`);
@@ -4926,6 +5050,231 @@
     renderAdminDashboard();
   }
 
+  /* =========================================================
+     CRÉATION DE COMPTE PAR L'ADMINISTRATION (acheteur / marchand / livreur)
+     Pour intégrer manuellement quelqu'un (par téléphone, en personne, migration
+     depuis un autre système...) sans passer par l'auto-inscription publique.
+     Respecte le même modèle que l'auto-inscription : une boutique ou un profil
+     livreur est toujours rattaché à une identité acheteur — si l'email saisi
+     correspond déjà à un compte acheteur (ou livreur, pour un marchand), ce
+     profil est ajouté à ce compte existant plutôt que d'en créer un nouveau.
+     ========================================================= */
+  let adminCreateRole = "buyer";
+
+  function adminBaseIdentity(email){
+    if(accounts.buyer[email]) return { role:"buyer", account: accounts.buyer[email] };
+    if(accounts.livreur[email]) return { role:"livreur", account: accounts.livreur[email] };
+    return null;
+  }
+
+  function openAdminCreateAccount(role){
+    adminCreateRole = role;
+    document.getElementById("admCreateError").style.display = "none";
+    document.getElementById("admCreateExistingNote").style.display = "none";
+    ["admCreateEmail","admCreateUsername","admCreateName","admCreatePhone","admCreatePassword","admCreateShop","admCreateBoutiqueNature","admCreateOrgName"].forEach(id=>{
+      const el = document.getElementById(id); if(el) el.value = "";
+    });
+    document.getElementById("admCreateUsername").disabled = false;
+    document.getElementById("admCreatePassword").disabled = false;
+    document.getElementById("admCreatePassword").placeholder = "8 car. min., lettres + chiffres";
+    document.getElementById("admCreateMerchantFields").style.display = role === "merchant" ? "block" : "none";
+    document.getElementById("admCreateLivreurFields").style.display = role === "livreur" ? "block" : "none";
+    document.getElementById("admCreateNameLabel").textContent = role === "merchant" ? "Nom du gérant" : "Nom complet";
+    document.getElementById("admCreateTitle").textContent =
+      role === "buyer" ? "Nouveau compte acheteur" : role === "merchant" ? "Nouvelle boutique marchande" : "Nouveau compte livreur";
+    document.getElementById("admCreateHint").textContent = role === "buyer"
+      ? "Création directe par l'administration — la personne n'a pas besoin de s'inscrire elle-même."
+      : "Si l'email correspond à un acheteur (ou un livreur, pour une boutique) déjà inscrit, ce profil sera ajouté à ce compte existant, comme lorsqu'une personne devient elle-même marchande ou livreur.";
+    if(role === "merchant"){
+      document.getElementById("admCreateMarche").innerHTML = marches.map(m=>`<option value="${m.id}">${m.name}</option>`).join("");
+      setAdminCreateSellerType("etal");
+      refreshAdminCreateZoneOptions();
+    }
+    if(role === "livreur"){
+      document.getElementById("admCreateAccountType").value = "particulier";
+      toggleAdminCreateOrgField();
+    }
+    openModal("adminCreateOverlay");
+  }
+
+  function checkAdminCreateExistingBase(){
+    if(adminCreateRole === "buyer") return;
+    const email = document.getElementById("admCreateEmail").value.trim().toLowerCase();
+    const base = email ? adminBaseIdentity(email) : null;
+    document.getElementById("admCreateExistingNote").style.display = base ? "block" : "none";
+    document.getElementById("admCreateUsername").disabled = !!base;
+    document.getElementById("admCreatePassword").disabled = !!base;
+    if(base){
+      document.getElementById("admCreateUsername").value = base.account.username;
+      document.getElementById("admCreatePassword").value = "";
+      document.getElementById("admCreatePassword").placeholder = "(mot de passe du compte existant conservé)";
+    } else {
+      document.getElementById("admCreatePassword").placeholder = "8 car. min., lettres + chiffres";
+    }
+  }
+
+  function refreshAdminCreateZoneOptions(){
+    const marcheId = document.getElementById("admCreateMarche").value;
+    const list = quartiers.filter(q=>q.marcheId===marcheId);
+    document.getElementById("admCreateZone").innerHTML = (list.length ? list : quartiers).map(q=>`<option value="${q.name}">${q.name}</option>`).join("");
+  }
+
+  function setAdminCreateSellerType(type){
+    document.getElementById("admCreateTypeEtalBtn").classList.toggle("active", type === "etal");
+    document.getElementById("admCreateTypeBoutiqueBtn").classList.toggle("active", type === "boutique");
+    document.getElementById("admCreateEtalFields").style.display = type === "etal" ? "block" : "none";
+    document.getElementById("admCreateBoutiqueFields").style.display = type === "boutique" ? "block" : "none";
+    document.getElementById("adminCreateOverlay").dataset.sellerType = type;
+  }
+
+  function toggleAdminCreateOrgField(){
+    const isOrg = document.getElementById("admCreateAccountType").value === "organisation";
+    document.getElementById("admCreateOrgNameField").style.display = isOrg ? "block" : "none";
+  }
+
+  function generateAdminCreatePassword(){
+    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789";
+    let pwd = "";
+    for(let i=0;i<10;i++) pwd += chars[Math.floor(Math.random()*chars.length)];
+    document.getElementById("admCreatePassword").value = pwd;
+  }
+
+  function showAdmCreateError(msg){
+    const el = document.getElementById("admCreateError");
+    el.textContent = msg;
+    el.style.display = "block";
+  }
+
+  function submitAdminCreateAccount(){
+    const role = adminCreateRole;
+    const email = document.getElementById("admCreateEmail").value.trim().toLowerCase();
+    const password = document.getElementById("admCreatePassword").value;
+    const username = document.getElementById("admCreateUsername").value.trim();
+    const name = document.getElementById("admCreateName").value.trim();
+    const phone = document.getElementById("admCreatePhone").value.trim();
+    document.getElementById("admCreateError").style.display = "none";
+
+    if(!email || !email.includes("@")) return showAdmCreateError("Merci de renseigner un email valide.");
+    if(!name || !phone) return showAdmCreateError("Merci de renseigner le nom complet et le téléphone.");
+    if(role === "buyer" && accounts.buyer[email]) return showAdmCreateError("Un compte acheteur existe déjà avec cet email.");
+    if(role === "merchant" && accounts.merchant[email]) return showAdmCreateError("Un compte marchand existe déjà avec cet email.");
+    if(role === "livreur" && accounts.livreur[email]) return showAdmCreateError("Un compte livreur existe déjà avec cet email.");
+
+    let base = role === "buyer" ? null : adminBaseIdentity(email);
+
+    if(!base){
+      if(!username) return showAdmCreateError("Merci de renseigner un nom d'utilisateur.");
+      if(!isStrongEnough(password)) return showAdmCreateError("Le mot de passe doit contenir au moins 8 caractères, avec au moins une lettre et un chiffre.");
+      accounts.buyer[email] = {
+        username, password, active: true, referralCode: generateReferralCode(username || name),
+        buyerId: nextBuyerId(),
+        profile: { name, phone, favorites: [], balance: 0, photo:null, verified:false, verifying:false, cguAcceptedAt: null, createdAt: Date.now(), createdByAdmin: true }
+      };
+      if(role === "buyer"){
+        saveState();
+        renderAdminDashboard();
+        closeModal("adminCreateOverlay");
+        showToast("Admin", `Compte acheteur créé pour ${username} (${email}).`, "app");
+        return;
+      }
+      base = { role:"buyer", account: accounts.buyer[email] };
+    }
+
+    if(role === "merchant"){
+      const shop = document.getElementById("admCreateShop").value.trim();
+      const sellerType = document.getElementById("adminCreateOverlay").dataset.sellerType || "etal";
+      let marcheId=null, zone="", saleType=null, boutiqueNature="";
+      if(sellerType === "etal"){
+        marcheId = document.getElementById("admCreateMarche").value;
+        zone = document.getElementById("admCreateZone").value;
+        saleType = document.getElementById("admCreateSaleType").value;
+        if(!marcheId || !zone) return showAdmCreateError("Merci de préciser le marché et le quartier de l'étal.");
+      } else {
+        boutiqueNature = document.getElementById("admCreateBoutiqueNature").value.trim();
+        if(!boutiqueNature) return showAdmCreateError("Merci de préciser la nature de la boutique.");
+      }
+      if(!shop) return showAdmCreateError("Merci de renseigner le nom de la boutique.");
+      accounts.merchant[email] = {
+        username: base.account.username, password: base.account.password, active: true,
+        referralCode: generateReferralCode(base.account.username || shop), merchantId: nextMerchantId(),
+        profile: {
+          name, shop, phone, sellerType, marcheId, zone, saleType, boutiqueNature,
+          subscribed:false, balance:0, photo:null, verified:false, verifying:false, cguAcceptedAt: null, createdAt: Date.now(), createdByAdmin: true
+        }
+      };
+    } else if(role === "livreur"){
+      const vehicle = document.getElementById("admCreateVehicle").value;
+      const accountType = document.getElementById("admCreateAccountType").value;
+      const orgName = document.getElementById("admCreateOrgName").value.trim();
+      if(accountType === "organisation" && !orgName) return showAdmCreateError("Merci de renseigner le nom de l'organisation.");
+      accounts.livreur[email] = {
+        username: base.account.username, password: base.account.password, active: true,
+        referralCode: generateReferralCode(base.account.username || name), livreurId: nextLivreurId(),
+        profile: { name, phone, vehicle, accountType, orgName: accountType==="organisation"?orgName:"", balance:0, photo:null, verified:false, verifying:false, cguAcceptedAt: null, createdAt: Date.now(), createdByAdmin: true }
+      };
+    }
+
+    saveState();
+    renderAdminDashboard();
+    closeModal("adminCreateOverlay");
+    showToast("Admin", `Compte ${role === "merchant" ? "marchand" : "livreur"} créé (${email}).`, "app");
+  }
+
+  /* =========================================================
+     AJOUT DE PRODUIT PAR L'ADMINISTRATION
+     Publie un produit pour le compte d'une boutique déjà inscrite — même
+     structure que merchantProducts.push() dans addMerchantProduct(), en
+     laissant choisir la boutique puisque l'admin n'en a pas une à lui.
+     ========================================================= */
+  function openAdminAddProduct(){
+    const merchantEntries = Object.entries(accounts.merchant);
+    document.getElementById("admProdVendor").innerHTML = merchantEntries.length
+      ? merchantEntries.map(([email,acc])=> `<option value="${email}">${escapeHtml(acc.profile.shop)} (${acc.merchantId || email})</option>`).join("")
+      : '<option value="">Aucune boutique inscrite</option>';
+    document.getElementById("admProdCat").innerHTML = quartiers.map(q=>`<option value="${q.id}">${escapeHtml(q.name)}</option>`).join("");
+    document.getElementById("admProdName").value = "";
+    document.getElementById("admProdPrice").value = "";
+    document.getElementById("admProdPhotos").value = "";
+    document.getElementById("admProdPhotosName").textContent = "Choisir une ou plusieurs photos";
+    document.getElementById("admProdPhotoLabelsField").style.display = "none";
+    document.getElementById("admProdPhotoLabelsList").innerHTML = "";
+    document.getElementById("admProdError").style.display = "none";
+    openModal("adminAddProductOverlay");
+  }
+
+  function onAdminProductPhotosPicked(){
+    const files = document.getElementById("admProdPhotos").files;
+    document.getElementById("admProdPhotosName").textContent = files.length ? `${files.length} photo(s) sélectionnée(s)` : "Choisir une ou plusieurs photos";
+    document.getElementById("admProdPhotoLabelsField").style.display = files.length ? "block" : "none";
+    if(files.length) buildPhotoLabelInputs(files, "admProdPhotoLabelsList");
+  }
+
+  function submitAdminAddProduct(){
+    const errEl = document.getElementById("admProdError");
+    errEl.style.display = "none";
+    const email = document.getElementById("admProdVendor").value;
+    const acc = accounts.merchant[email];
+    if(!acc){ errEl.textContent = "Merci de choisir une boutique."; errEl.style.display = "block"; return; }
+    const name = document.getElementById("admProdName").value.trim();
+    const price = document.getElementById("admProdPrice").value.trim();
+    if(!name || !price){ errEl.textContent = "Merci d'indiquer le nom et le prix du produit."; errEl.style.display = "block"; return; }
+    const cat = document.getElementById("admProdCat").value || (quartiers[0] ? quartiers[0].id : "pagnes");
+    const photoFiles = document.getElementById("admProdPhotos").files;
+    const publish = (photos)=>{
+      merchantProducts.push({
+        name, price: price.replace(/[^\d]/g,"").replace(/\B(?=(\d{3})+(?!\d))/g, " "),
+        vendor: acc.profile.shop, merchantId: acc.merchantId || null, cat, photos: photos || [],
+        createdAt: Date.now(), addedByAdmin: true
+      });
+      closeModal("adminAddProductOverlay");
+      renderProducts();
+      renderAdminDashboard();
+      saveState();
+      showToast("Admin", `Produit "${name}" ajouté pour la boutique ${acc.profile.shop}.`, "app");
+    };
+    if(photoFiles.length) filesToPhotoObjects(photoFiles, "admProdPhotoLabelsList").then(publish);
+    else publish([]);
+  }
 
   document.getElementById("guideBtn").addEventListener("click", ()=> openModal("guideOverlay"));
   function refreshMerZoneOptions(){
@@ -8162,8 +8511,65 @@
     document.getElementById("mpvPhotoInput").value = "";
     document.getElementById("mpvPhotoName").textContent = "Changer la photo de profil";
     document.getElementById("mpvRoleHint").textContent = `Profil ${idn.label.toLowerCase()} · ${idn.session.username}`;
+    document.getElementById("mpvCurrentPassword").value = "";
+    document.getElementById("mpvNewPassword").value = "";
+    document.getElementById("mpvNewPassword2").value = "";
+    document.getElementById("mpvPasswordError").style.display = "none";
+    document.getElementById("mpvPasswordSuccess").style.display = "none";
     closeMobileDrawer();
     openModal("myProfileOverlay");
+  }
+
+  // Une seule personne = un seul mot de passe partagé entre ses rôles (acheteur/marchand/
+  // livreur — voir upgradeSourceIdentity/createMerchant/createLivreur) : on le met à jour
+  // partout où cet email a un compte, pour ne jamais laisser une copie de mot de passe
+  // périmée derrière soi après un changement.
+  function updatePasswordEverywhere(email, newPassword){
+    ["buyer","merchant","livreur"].forEach(role=>{
+      if(accounts[role] && accounts[role][email]) accounts[role][email].password = newPassword;
+    });
+  }
+
+  function changeMyPassword(){
+    const idn = getActiveIdentity();
+    if(!idn) return;
+    const errEl = document.getElementById("mpvPasswordError");
+    const okEl = document.getElementById("mpvPasswordSuccess");
+    errEl.style.display = "none";
+    okEl.style.display = "none";
+    const acc = accounts[idn.role][idn.session.email];
+    if(!acc) return;
+    const current = document.getElementById("mpvCurrentPassword").value;
+    const next1 = document.getElementById("mpvNewPassword").value;
+    const next2 = document.getElementById("mpvNewPassword2").value;
+    if(current !== acc.password){
+      errEl.textContent = "Le mot de passe actuel est incorrect.";
+      errEl.style.display = "block";
+      return;
+    }
+    if(!isStrongEnough(next1)){
+      errEl.textContent = "Le nouveau mot de passe doit contenir au moins 8 caractères, avec au moins une lettre et un chiffre.";
+      errEl.style.display = "block";
+      return;
+    }
+    if(next1 !== next2){
+      errEl.textContent = "Les deux mots de passe ne correspondent pas.";
+      errEl.style.display = "block";
+      return;
+    }
+    if(next1 === current){
+      errEl.textContent = "Le nouveau mot de passe doit être différent de l'actuel.";
+      errEl.style.display = "block";
+      return;
+    }
+    updatePasswordEverywhere(idn.session.email, next1);
+    document.getElementById("mpvCurrentPassword").value = "";
+    document.getElementById("mpvNewPassword").value = "";
+    document.getElementById("mpvNewPassword2").value = "";
+    okEl.style.display = "block";
+    const phone = acc.profile && acc.profile.phone;
+    if(phone) sendSms(phone, "Espace Commerce+ — Le mot de passe de votre compte vient d'être modifié à l'instant. Si vous n'êtes pas à l'origine de ce changement, contactez immédiatement l'assistance.");
+    saveState();
   }
 
   function onProfilePhotoPicked(){
